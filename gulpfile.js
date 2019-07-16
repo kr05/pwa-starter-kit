@@ -12,6 +12,8 @@ const gulp = require('gulp');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const del = require('del');
+const manifest = require('gulp-http2-push-manifest');
+
 
 /**
  * Cleans the prpl-server build in the server directory.
@@ -37,7 +39,33 @@ gulp.task('prpl-server:build', () => {
     .pipe(gulp.dest('server/build'));
 });
 
+/**
+ * Creates push-manifest.
+ */
+gulp.task('prpl-server:push-manifest', () => {
+  return gulp.src("server/build/index.html")
+  .pipe(manifest());
+});
+
+/**
+ * Copies assets not handled by rollup into the public/ directory.
+ */
+gulp.task('prpl-server:rollup', () => {
+  return gulp.src([
+    'images/**',
+    'node_modules/@webcomponents/webcomponentsjs/**',
+    'index.html',
+    'manifest.json',
+    'node_modules/regenerator-runtime/runtime.js',
+    'node_modules/systemjs/dist/s.min.js',
+    'push-manifest.json'
+  ], {base: '.'})
+  .pipe(gulp.dest('build/es5-bundled'))
+  .pipe(gulp.dest('build/esm-bundled'));
+});
+
 gulp.task('prpl-server', gulp.series(
+  'prpl-server:rollup',
   'prpl-server:clean',
   'prpl-server:build'
 ));

@@ -1,0 +1,7 @@
+{
+    "entrypoint": "index.html",
+    "builds": [
+      {"name": "esm-bundled", "browserCapabilities": ["es2015", "push"]},
+      {"name": "es5-bundled"}
+    ]
+  }
