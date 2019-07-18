@@ -50,22 +50,32 @@ gulp.task('prpl-server:push-manifest', () => {
 /**
  * Copies assets not handled by rollup into the public/ directory.
  */
-gulp.task('prpl-server:rollup', () => {
+// gulp.task('prpl-server:rollup', () => {
+//   return gulp.src([
+//     'push-manifest.json',
+//     'node_modules/regenerator-runtime/runtime.js',
+//     'node_modules/systemjs/dist/s.min.js',
+//     'node_modules/@webcomponents/webcomponentsjs/**'
+//   ], {base: '.'})
+//   .pipe(gulp.dest('build/esm-bundled'))
+//   .pipe(gulp.dest('build/es5-bundled'));
+// });
+
+gulp.task('prpl-server:common-files', () => {
   return gulp.src([
-    'images/**',
-    'node_modules/@webcomponents/webcomponentsjs/**',
     'index.html',
+    'images/**',
     'manifest.json',
+    'push-manifest.json',
     'node_modules/regenerator-runtime/runtime.js',
     'node_modules/systemjs/dist/s.min.js',
-    'push-manifest.json'
+    'node_modules/@webcomponents/webcomponentsjs/**'
   ], {base: '.'})
-  .pipe(gulp.dest('build/es5-bundled'))
-  .pipe(gulp.dest('build/esm-bundled'));
+  .pipe(gulp.dest('build'));
 });
 
 gulp.task('prpl-server', gulp.series(
-  'prpl-server:rollup',
+  'prpl-server:common-files',
   'prpl-server:clean',
   'prpl-server:build'
 ));

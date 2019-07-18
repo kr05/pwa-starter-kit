@@ -1,11 +1,11 @@
 {
   "/": {
-    "my-app.js": {
+    "esm-bundled/my-app.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
     },
-    "my-view1.js": {
+    "esm-bundled/my-view1.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
@@ -16,12 +16,12 @@
     }
   },
   "/view1": {
-    "my-app.js": {
+    "esm-bundled/my-app.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
     },
-    "my-view1.js": {
+    "esm-bundled/my-view1.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
@@ -32,12 +32,12 @@
     }
   },
   "/view2": {
-    "my-app.js": {
+    "esm-bundled/my-app.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
     },
-    "my-view2.js": {
+    "esm-bundled/my-view2.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
@@ -48,12 +48,12 @@
     }
   },
   "/view3": {
-    "my-app.js": {
+    "esm-bundled/my-app.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
     },
-    "my-view3.js": {
+    "esm-bundled/my-view3.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
