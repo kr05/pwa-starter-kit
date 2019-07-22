@@ -13,7 +13,7 @@ const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const del = require('del');
 const manifest = require('gulp-http2-push-manifest');
-
+const workboxBuild = require('workbox-build');
 
 /**
  * Cleans the prpl-server build in the server directory.
@@ -72,6 +72,17 @@ gulp.task('prpl-server:common-files', () => {
     'node_modules/@webcomponents/webcomponentsjs/**'
   ], {base: '.'})
   .pipe(gulp.dest('build'));
+});
+
+gulp.task('service-worker', () => {
+  // This will return a Promise
+  return workboxBuild.generateSW({
+    globDirectory: 'build',
+    globPatterns: [
+      '**/*.{html,js,css}',
+    ],
+    swDest: 'build/service-worker.js'
+  });
 });
 
 gulp.task('prpl-server', gulp.series(
