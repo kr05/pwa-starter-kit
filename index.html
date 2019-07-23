@@ -77,7 +77,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       // Redux assumes `process.env.NODE_ENV` exists in the ES module build.
       // https://github.com/reactjs/redux/issues/2907
-      window.process = { env: { NODE_ENV: 'production' } };
+      const node_env = 'NODE_ENVIRONMENT' === 'production' ? 'production' : 'development';
+      window.process = { env: { NODE_ENV: node_env } };
     </script>
 
     <!-- Add any global styles for body, document, etc. -->
@@ -110,7 +111,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </noscript>
     <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
     <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+    
+
     <!-- Built with love using PWA Starter Kit -->
-    <script type="module" src="src/components/my-app.js"></script>
+    <script>
+      if (window.process.env.NODE_ENV === 'development') {
+        import('./src/components/my-app.js');
+      } else {
+        import('./esm-bundled/my-app.js');
+        window.supportsDynamicImport = true;
+      }
+    </script>
+    <script>
+      if (window.process.env.NODE_ENV === 'production') {
+        function appendScript(src, cb) {
+          const script = document.createElement('script');
+          script.src = src;
+          script.addEventListener('load', cb);
+          document.head.appendChild(script);
+        }
+        if (!window.supportsDynamicImport) {
+          appendScript('node_modules/systemjs/dist/s.min.js', function() {
+            appendScript('node_modules/regenerator-runtime/runtime.js', function() {
+              appendScript('node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js', function() {
+                System.import('./es5-bundled/my-app.js');
+              });
+            });
+          });
+        } 
+      }
+    </script>
   </body>
 </html>
