@@ -74,19 +74,40 @@ gulp.task('prpl-server:common-files', () => {
   .pipe(gulp.dest('build'));
 });
 
+// gulp.task('service-worker', () => {
+//   return workboxBuild.generateSW({
+//     globDirectory: 'build',
+//     globPatterns: [
+//       '**/*.{html,js,css}',
+//     ],
+//     swDest: 'build/service-worker.js',
+//   }).then(() => {
+//     console.log(`Generated new service worker.`);
+//   }).catch((err) => {
+//     console.error(`Unable to generate a new service worker.`, err);
+//   });
+// });
+
 gulp.task('service-worker', () => {
-  // This will return a Promise
-  return workboxBuild.generateSW({
+  const swSrc = './service-worker.js';
+  const swDest = 'build/service-worker.js';
+
+  return workboxBuild.injectManifest({
+    swSrc,
+    swDest,
+    // Other configuration options...
     globDirectory: 'build',
     globPatterns: [
       '**/*.{html,js,css}',
-    ],
-    swDest: 'build/service-worker.js'
+    ]
+  }).then(({count, size}) => {
+    console.log(`Generated ${swDest}, which will precache ${count} files, totaling ${size} bytes.`);
   });
 });
 
 gulp.task('prpl-server', gulp.series(
   'prpl-server:common-files',
   'prpl-server:clean',
+  'service-worker',
   'prpl-server:build'
 ));
